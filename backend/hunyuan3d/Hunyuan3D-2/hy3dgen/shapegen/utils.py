@@ -41,7 +41,7 @@ def _repo_id_for_hub_download(stored_path: str) -> str:
         return (
             os.environ.get("HF_HUB_REPO_ID")
             or os.environ.get("MODEL_NAME")
-            or "tencent/Hunyuan3D-2"
+            or "tencent/Hunyuan3D-2mini"
         )
     try:
         from huggingface_hub.utils import validate_repo_id
@@ -52,7 +52,7 @@ def _repo_id_for_hub_download(stored_path: str) -> str:
         return (
             os.environ.get("HF_HUB_REPO_ID")
             or os.environ.get("MODEL_NAME")
-            or "tencent/Hunyuan3D-2"
+            or "tencent/Hunyuan3D-2mini"
         )
 
 
@@ -123,9 +123,10 @@ def smart_load_model(
         try:
             from huggingface_hub import snapshot_download
             # 只下载指定子目录
+            repo_id = _repo_id_for_hub_download(original_model_path)
             path = snapshot_download(
-                repo_id=_repo_id_for_hub_download(original_model_path),
-                allow_patterns=[f"{subfolder}/*"],  # 关键修改：模式匹配子文件夹
+                repo_id=repo_id,
+                allow_patterns=[f"{subfolder}/**", f"{subfolder}/*"],
             )
             model_path = os.path.join(path, subfolder)  # 保持路径拼接逻辑不变
         except ImportError:
@@ -137,7 +138,12 @@ def smart_load_model(
             raise e
 
     if not os.path.exists(model_path):
-        raise FileNotFoundError(f"Model path {original_model_path} not found")
+        repo_id = _repo_id_for_hub_download(original_model_path)
+        raise FileNotFoundError(
+            f"Model path not found: {model_path} "
+            f"(repo_id={repo_id!r}, subfolder={subfolder!r}). "
+            f"Mini-turbo weights are under tencent/Hunyuan3D-2mini, not tencent/Hunyuan3D-2."
+        )
 
     extension = 'ckpt' if not use_safetensors else 'safetensors'
     variant = '' if variant is None else f'.{variant}'

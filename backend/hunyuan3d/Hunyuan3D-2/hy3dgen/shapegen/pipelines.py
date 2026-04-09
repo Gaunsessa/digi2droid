@@ -265,6 +265,8 @@ class Hunyuan3DDiTPipeline:
     ):
         if enabled:
             model_path = self.kwargs['from_pretrained_kwargs']['model_path']
+            if not model_path:
+                model_path = os.environ.get('MODEL_NAME', 'tencent/Hunyuan3D-2mini')
             turbo_vae_mapping = {
                 'Hunyuan3D-2': ('tencent/Hunyuan3D-2', 'hunyuan3d-vae-v2-0-turbo'),
                 'Hunyuan3D-2mv': ('tencent/Hunyuan3D-2', 'hunyuan3d-vae-v2-0-turbo'),
@@ -286,6 +288,8 @@ class Hunyuan3DDiTPipeline:
             )
         else:
             model_path = self.kwargs['from_pretrained_kwargs']['model_path']
+            if not model_path:
+                model_path = os.environ.get('MODEL_NAME', 'tencent/Hunyuan3D-2mini')
             vae_mapping = {
                 'Hunyuan3D-2': ('tencent/Hunyuan3D-2', 'hunyuan3d-vae-v2-0'),
                 'Hunyuan3D-2mv': ('tencent/Hunyuan3D-2', 'hunyuan3d-vae-v2-0'),

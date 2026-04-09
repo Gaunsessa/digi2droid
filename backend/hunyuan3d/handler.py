@@ -12,7 +12,8 @@ from trimesh.exchange.export import export_dict64
 from hy3dgen.rembg import BackgroundRemover
 from hy3dgen.shapegen import Hunyuan3DDiTFlowMatchingPipeline
 
-MODEL_ID = os.environ.get("MODEL_NAME", "tencent/Hunyuan3D-2")
+# Mini-turbo DiT lives in tencent/Hunyuan3D-2mini, not tencent/Hunyuan3D-2 (see modelzoo.md).
+MODEL_ID = os.environ.get("MODEL_NAME", "tencent/Hunyuan3D-2mini")
 HF_CACHE_ROOT = "/runpod-volume/huggingface-cache/hub"
 
 os.environ.setdefault("HUGGINGFACE_HUB_CACHE", HF_CACHE_ROOT)
