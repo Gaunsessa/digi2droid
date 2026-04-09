@@ -116,9 +116,6 @@ def handler(job):
     
     mesh_glb_base64 = base64.b64encode(glb_bytes).decode("ascii")
 
-    return {
-        "status": "success",
-        "mesh": mesh_glb_base64,
-    }
+    return mesh_glb_base64
 
 runpod.serverless.start({"handler": handler})
