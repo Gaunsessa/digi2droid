@@ -7,7 +7,6 @@ from io import BytesIO
 from PIL import Image
 
 from trimesh import Trimesh
-from trimesh.exchange.export import export_dict64
 
 from hy3dgen.rembg import BackgroundRemover
 from hy3dgen.shapegen import Hunyuan3DDiTFlowMatchingPipeline
@@ -111,11 +110,15 @@ def handler(job):
         output_type='trimesh'
     )[0]
 
-    mesh_dict64 = export_dict64(mesh)
+    glb_bytes = mesh.export(file_type="glb")
+    if not isinstance(glb_bytes, bytes):
+        raise RuntimeError(f"expected GLB bytes from export, got {type(glb_bytes)}")
+    
+    mesh_glb_base64 = base64.b64encode(glb_bytes).decode("ascii")
 
     return {
         "status": "success",
-        "mesh": mesh_dict64,
+        "mesh": mesh_glb_base64,
     }
 
 runpod.serverless.start({"handler": handler})
