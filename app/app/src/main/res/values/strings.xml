@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">digi2droid</string>
+    <string name="main_title">USB cameras (libgphoto2)</string>
+    <string name="empty_digicams">No USB devices detected.\n\nConnect a camera via USB OTG, then tap refresh.</string>
+    <string name="digicam_item_subtitle">USB device: %1$s</string>
+    <string name="refresh">Refresh list</string>
+    <string name="gphoto_need_permission">Tap this row to grant USB permission, then refresh.</string>
+    <string name="gphoto_probing">Querying libgphoto2…</string>
+    <string name="gphoto_open_failed">Could not open USB device (permission or driver).</string>
+    <string name="usb_claim_failed">Could not claim a USB interface. Unplug/replug the camera, try another USB mode on the camera, or disconnect other apps using it.</string>
+    <string name="gphoto_null">libgphoto2 returned no summary.</string>
+    <string name="gphoto_error">libgphoto2 error</string>
+</resources>

@@ -1,0 +1,12 @@
+[submodule "backend/hunyuan3d/Hunyuan3D-2"]
+	path = backend/hunyuan3d/Hunyuan3D-2
+	url = https://github.com/Tencent-Hunyuan/Hunyuan3D-2
+[submodule "app/third_party/libgphoto2"]
+	path = app/third_party/libgphoto2
+	url = https://github.com/gphoto/libgphoto2.git
+[submodule "app/third_party/libusb"]
+	path = app/third_party/libusb
+	url = https://github.com/libusb/libusb.git
+[submodule "app/third_party/libtool"]
+	path = app/third_party/libtool
+	url = https://git.savannah.gnu.org/git/libtool.git

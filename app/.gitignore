@@ -1,0 +1,13 @@
+/.gradle/
+/.idea/
+/build/
+**/build/
+local.properties
+*.iml
+captures/
+*.apk
+*.ap_
+*.dex
+/third_party/libgphoto2-android/
+/.gphoto-android-build/
+app/.cxx/
