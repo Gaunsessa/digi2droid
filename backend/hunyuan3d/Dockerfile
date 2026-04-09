@@ -16,6 +16,9 @@ RUN cd Hunyuan3D-2 && \
     cd ../differentiable_renderer && python3 setup.py install
 
 # Handler setup
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
 COPY handler.py .
 
 CMD ["python", "-u", "handler.py"]
