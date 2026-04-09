@@ -1,5 +1,8 @@
 FROM runpod/pytorch:2.4.0-py3.11-cuda12.4.1-devel-ubuntu22.04
 
+RUN apt-get update && apt-get install -y --no-install-recommends libgl1 && \
+    rm -rf /var/lib/apt/lists/*
+
 # Explicit CUDA arch list for PyTorch
 ARG TORCH_CUDA_ARCH_LIST="8.9"
 ENV TORCH_CUDA_ARCH_LIST=${TORCH_CUDA_ARCH_LIST}

@@ -35,6 +35,27 @@ def get_logger(name):
 logger = get_logger('hy3dgen.shapgen')
 
 
+def _repo_id_for_hub_download(stored_path: str) -> str:
+    """Resolve a Hugging Face repo id for snapshot_download; paths are not valid repo ids."""
+    if not stored_path:
+        return (
+            os.environ.get("HF_HUB_REPO_ID")
+            or os.environ.get("MODEL_NAME")
+            or "tencent/Hunyuan3D-2"
+        )
+    try:
+        from huggingface_hub.utils import validate_repo_id
+
+        validate_repo_id(stored_path)
+        return stored_path
+    except Exception:
+        return (
+            os.environ.get("HF_HUB_REPO_ID")
+            or os.environ.get("MODEL_NAME")
+            or "tencent/Hunyuan3D-2"
+        )
+
+
 class synchronize_timer:
     """ Synchronized timer to count the inference time of `nn.Module.forward`.
 
@@ -103,7 +124,7 @@ def smart_load_model(
             from huggingface_hub import snapshot_download
             # 只下载指定子目录
             path = snapshot_download(
-                repo_id=original_model_path,
+                repo_id=_repo_id_for_hub_download(original_model_path),
                 allow_patterns=[f"{subfolder}/*"],  # 关键修改：模式匹配子文件夹
             )
             model_path = os.path.join(path, subfolder)  # 保持路径拼接逻辑不变
