@@ -22,6 +22,13 @@ RUN cd Hunyuan3D-2 && \
     cd hy3dgen/texgen/custom_rasterizer && python3 setup.py install && \
     cd ../differentiable_renderer && python3 setup.py install
 
+# Download models
+ARG MODEL_NAME=tencent/Hunyuan3D-2mini
+RUN pip install --no-cache-dir huggingface_hub && \
+    python -c "from huggingface_hub import snapshot_download; snapshot_download('${MODEL_NAME}', local_dir='/models/${MODEL_NAME}', allow_patterns=['hunyuan3d-dit-v2-mini-turbo/*', 'hunyuan3d-vae-v2-mini-turbo/*'])"
+
+ENV HY3DGEN_MODELS=/models
+
 # Handler setup
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
