@@ -1,5 +1,6 @@
 .venv/
-.DS_Store
 __pycache__/
+
+.DS_Store
+
 eval/
-backend/hunyuan3d/Hunyuan3D-2/
