@@ -68,6 +68,7 @@ pipeline = Hunyuan3DDiTFlowMatchingPipeline.from_pretrained(
     use_safetensors=False,
     device=device,
 )
+pipeline.kwargs['from_pretrained_kwargs']['model_path'] = MODEL_ID
 pipeline.enable_flashvdm(topk_mode="merge")
 
 print("[ModelStore] Model loaded from local snapshot")

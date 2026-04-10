@@ -10,7 +10,11 @@ ENV TORCH_CUDA_ARCH_LIST=${TORCH_CUDA_ARCH_LIST}
 WORKDIR /app
 
 # Hunyuan3D-2 setup
-COPY Hunyuan3D-2/ ./Hunyuan3D-2/
+ARG HUNYUAN3D_COMMIT=f8db63096c8282cb27354314d896feba5ba6ff8a
+RUN git clone https://github.com/Tencent-Hunyuan/Hunyuan3D-2.git Hunyuan3D-2 && \
+    cd Hunyuan3D-2 && \
+    git checkout ${HUNYUAN3D_COMMIT} && \
+    rm -rf .git
 
 RUN cd Hunyuan3D-2 && \
     pip install --no-cache-dir -r requirements.txt && \
