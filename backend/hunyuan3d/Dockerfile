@@ -23,11 +23,22 @@ RUN cd Hunyuan3D-2 && \
     cd ../differentiable_renderer && python3 setup.py install
 
 # Download models
-ARG MODEL_NAME=tencent/Hunyuan3D-2mini
+ARG HF_REPO_ID=tencent/Hunyuan3D-2mini
 RUN pip install --no-cache-dir huggingface_hub && \
-    python -c "from huggingface_hub import snapshot_download; snapshot_download('${MODEL_NAME}', local_dir='/models/${MODEL_NAME}', allow_patterns=['hunyuan3d-dit-v2-mini-turbo/*', 'hunyuan3d-vae-v2-mini-turbo/*'])"
+    python -c "\
+from huggingface_hub import snapshot_download; \
+snapshot_download( \
+    '${HF_REPO_ID}', \
+    local_dir='/models/${HF_REPO_ID}', \
+    allow_patterns=[ \
+        'hunyuan3d-dit-v2-mini-turbo/config.yaml', \
+        'hunyuan3d-dit-v2-mini-turbo/model.fp16.ckpt', \
+        'hunyuan3d-vae-v2-mini-turbo/config.yaml', \
+        'hunyuan3d-vae-v2-mini-turbo/model.fp16.ckpt', \
+    ], \
+)"
 
-ENV HY3DGEN_MODELS=/models
+ENV MODEL_DIR=/models/${HF_REPO_ID}
 
 # Handler setup
 COPY requirements.txt .

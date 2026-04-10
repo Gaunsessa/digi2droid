@@ -2,6 +2,7 @@ import base64
 import gzip
 import json
 import os
+from pathlib import Path
 
 import torch
 import runpod
@@ -16,24 +17,24 @@ from hy3dgen.shapegen.postprocessors import FaceReducer
 
 MAX_RESULT_JSON_BYTES = int(os.environ.get("MAX_RESULT_JSON_BYTES", str(20 * 1024 * 1024)))
 
-MODEL_ID = os.environ.get("MODEL_NAME", "tencent/Hunyuan3D-2mini")
-MODEL_BASE = os.environ.get("HY3DGEN_MODELS", "/models")
+MODEL_DIR = Path(os.environ["MODEL_DIR"])
+MODEL_ID = f"{MODEL_DIR.parent.name}/{MODEL_DIR.name}"
+DIT_SUBFOLDER = "hunyuan3d-dit-v2-mini-turbo"
 
-os.environ["HY3DGEN_MODELS"] = MODEL_BASE
+os.environ["HY3DGEN_MODELS"] = str(MODEL_DIR.parent.parent)
 os.environ["HF_HUB_OFFLINE"] = "1"
 os.environ["TRANSFORMERS_OFFLINE"] = "1"
 
 
-def load_model(model_id):
-    model_dir = os.path.join(MODEL_BASE, model_id)
-    if not os.path.isdir(model_dir):
-        raise RuntimeError(f"Baked model not found at {model_dir}")
+def load_model():
+    if not MODEL_DIR.is_dir():
+        raise RuntimeError(f"Model not found at {MODEL_DIR}")
 
-    print(f"Loading model from {model_dir}")
+    print(f"Loading model from {MODEL_DIR}")
 
     pipeline = Hunyuan3DDiTFlowMatchingPipeline.from_pretrained(
-        model_id,
-        subfolder="hunyuan3d-dit-v2-mini-turbo",
+        MODEL_ID,
+        subfolder=DIT_SUBFOLDER,
         use_safetensors=False,
         device="cuda",
     )
@@ -93,6 +94,6 @@ def handle_job(job, pipeline):
 
 
 if __name__ == "__main__":
-    pipeline = load_model(MODEL_ID)
+    pipeline = load_model()
 
     runpod.serverless.start({"handler": lambda x: handle_job(x, pipeline)})
