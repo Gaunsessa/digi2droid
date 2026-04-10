@@ -1,1 +1,4 @@
 runpod
+
+# Pin to avoid "Unknown format for load: ply"
+pymeshlab==2023.12.post3
