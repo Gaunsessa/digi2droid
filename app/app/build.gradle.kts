@@ -70,6 +70,7 @@ android {
     sourceSets {
         getByName("main") {
             jniLibs.srcDir(rootProject.file("third_party/libgphoto2-android"))
+            java.setSrcDirs(listOf("src/main/kotlin"))
         }
     }
 }
